@@ -14,6 +14,7 @@ $LOAD_PATH << File.join(ROOT, 'test')
 require File.join(ROOT, 'lib', 'delayed_paperclip.rb')
 
 require 'active_support'
+require 'active_support/core_ext'
 gem 'sqlite3-ruby'
 
 gem 'paperclip'
