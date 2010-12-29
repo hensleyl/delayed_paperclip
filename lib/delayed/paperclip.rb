@@ -25,6 +25,10 @@ module Delayed
             Delayed::Job.enqueue DelayedPaperclipJob.new(self.class.name, read_attribute(:id), name.to_sym)
           elsif resque?
             Resque.enqueue(ResquePaperclipJob, self.class.name, read_attribute(:id), name.to_sym)
+          elsif spawn?
+            spawn_block do
+              DelayedPaperclipJob.new(self.class.name, read_attribute(:id), name.to_sym).perform
+            end
           end
         end
 
@@ -71,6 +75,10 @@ module Delayed
 
       def resque?
         defined? Resque
+      end
+
+      def spawn?
+        defined? Spawn
       end
       
       def column_exists?(column)
